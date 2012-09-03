@@ -1,0 +1,28 @@
+# Maintainer: Simone Gaiarin <simgunz@gmail.com>
+
+pkgname=lockdev
+pkgver=1.0.3_1.4
+_pkgver=1.0.3
+pkgrel=2
+pkgdesc='Run-time shared library for locking devices, using _both_ FSSTND and SVr4 methods.'
+url='http://packages.qa.debian.org/l/lockdev.html'
+license=("GPL")
+arch=('i686' 'x86_64')
+source=("http://ftp.debian.org/debian/pool/main/l/${pkgname}/${pkgname}_${_pkgver}.orig.tar.gz"
+              "http://ftp.debian.org/debian/pool/main/l/${pkgname}/${pkgname}_${pkgver/_/-}.diff.gz")
+md5sums=('64b9c1b87b125fc348e892e24625524a'
+         'a4f058e6274017bdc592297e9ba960ec')
+build() {
+  cd "${pkgname}-${_pkgver}"
+
+  patch -p1 -i "../${pkgname}_${pkgver/_/-}.diff"
+  sed -i "s/CFLAGS\t= -g/CFLAGS\t= -g -fPIC/" Makefile
+
+  make shared
+  make static
+}
+
+package() {
+  cd "${pkgname}-${_pkgver}"
+  make basedir="${pkgdir}/usr" install
+}

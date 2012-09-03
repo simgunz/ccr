@@ -1,0 +1,29 @@
+# Maintainer: Simone Gaiarin <simgunz@gmail.com>
+
+pkgname=grive
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="Open source Linux client for Google Drive"
+arch=('i686' 'x86_64')
+url="http://grive.github.com/grive/"
+license=('GPL')
+categories=('network')
+depends=('gcc-libs' 'curl' 'json-c' 'openssl' 'boost')
+makedepends=('cmake' 'cppunit')
+options=(!emptydirs)
+source=("${pkgname}-v${pkgver}-${pkgrel}-src.tar.gz::https://nodeload.github.com/Grive/grive/tarball/v${pkgver}")
+md5sums=('00fe68e3fa1c047e48e3b2ac4a17b606')
+
+build() {
+  cd "$srcdir/Grive-grive-93d696a"
+
+  mkdir build
+
+  cd build
+
+  cmake .. -DCMAKE_BUILD_TYPE=Release \
+           -DCMAKE_INSTALL_PREFIX="$(kde4-config --prefix)"
+
+  make
+  make DESTDIR="$pkgdir/" install
+}

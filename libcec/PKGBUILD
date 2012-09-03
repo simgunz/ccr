@@ -1,0 +1,28 @@
+# Maintainer: Simone Gaiarin <simgunz@gmail.com>
+
+pkgname=libcec
+pkgver=1.8.1
+pkgrel=1
+pkgdesc="Pulse-Eight's libcec for the Pulse-Eight USB-CEC adapter"
+arch=('i686' 'x86_64')
+url="https://github.com/Pulse-Eight/libcec"
+license=('GPL')
+depends=('udev' 'lockdev')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Pulse-Eight/libcec/tarball/$pkgname-$pkgver")
+_srcfolder=Pulse-Eight-libcec-34a9cec
+sha256sums=('97cda7935404360b56e3c0698deabcc97548bc357a4e4fecbe89de3db12ca0bc')
+options=(!libtool)
+
+build() {
+  mv "$_srcfolder" "$pkgname-$pkgver"
+
+  cd "$pkgname-$pkgver"
+  autoreconf -vif
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

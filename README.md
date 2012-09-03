@@ -1,4 +1,0 @@
-ccr
-===
-
-Chakra ccr PKGBUILD

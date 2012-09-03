@@ -1,0 +1,8 @@
+post_install() {
+cat << EOF
+:: Schedule files are located in '/usr/share/gnaural/schedule/'
+::
+:: To install all schedule files in ~/.gnaural/
+:: execute '/usr/share/gnaural/schedule/doinst.sh'
+EOF
+}

@@ -1,0 +1,52 @@
+# Maintainer: Simone Gaiarin (simgunz) <simgunz@gmail.com>
+
+pkgname=timekpr-dev
+_pkgname=timekpr
+pkgver=20110629
+pkgrel=1
+pkgdesc="This program will control the computer usage of your user accounts. You can limit their daily usage based on a timed access duration and configure periods of day when they can log in."
+arch=('i686' 'x86_64')
+url='https://launchpad.net/timekpr'
+license="GPL"
+depends=('python2' 'pyqt' 'kdebindings-python')
+makedepends=('gcc' 'make' 'cmake' 'automoc4' 'git')
+
+install=("$_pkgname.install")
+md5sums=()
+
+_gitroot="git://github.com/simgunz/$_pkgname.git"
+_gitname="$_pkgname"
+_gitbranch="dev"
+
+build() {
+  cd $srcdir
+  msg "Connecting to GIT server...."
+ 
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."    
+  else
+    git clone $_gitroot $_gitname
+    cd $_gitname
+  fi
+ 
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+ 
+  rm -rf $srcdir/$_gitname-build
+  cp -r $srcdir/$_gitname $srcdir/$_gitname-build
+  cd $srcdir/$_gitname-build/  
+  cd src
+ 
+  cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+        .
+  make
+}
+ 
+package() {
+  cd $srcdir/$_gitname-build/src
+ 
+  make DESTDIR=$pkgdir install
+
+} 
