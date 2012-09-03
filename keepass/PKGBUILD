@@ -16,10 +16,10 @@ source=(http://downloads.sourceforge.net/keepass/KeePass-2.19.zip
         keepass.desktop
         keepass.xml
         KeePass.config.xml
-        KeePass_6_256x256x32.png
-        KeePass_7_48x48x32.png
-        KeePass_8_32x32x32.png
-        KeePass_9_16x16x32.png)
+        https://raw.github.com/simgunz/ccr/master/keepass/KeePass_6_256x256x32.png
+        https://raw.github.com/simgunz/ccr/master/keepass/KeePass_7_48x48x32.png
+        https://raw.github.com/simgunz/ccr/master/keepass/KeePass_8_32x32x32.png
+        https://raw.github.com/simgunz/ccr/master/keepass/KeePass_9_16x16x32.png)
 md5sums=('20b8551b4afe786a929120a5e86fe932'
          'daa5d6c01c11cf38c6f5cc207333aa9a'
          'a2a0dff1ebf0aaf6cbfb6f8566f4a010'
@@ -30,7 +30,6 @@ md5sums=('20b8551b4afe786a929120a5e86fe932'
          '5b060d5376e94f6743e787a46f53e9a3'
          '17044c8d69ad5275a2a57843b19ad89d'
          '4dfb6d0d6535c6d57ee88a4de7119095')
-
 package() {
   cd "${srcdir}"
 
