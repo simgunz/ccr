@@ -2,7 +2,7 @@
 
 pkgname=kdeplasma-addons-applets-workflow
 pkgver=0.1.99
-pkgrel=1
+pkgrel=2
 name=plasmoid-workflow
 pkgdesc="A KDE Plasmoid that integrates Activities, Virtual Desktops and Tasks Functionalities from Plasma Desktop in just one component."
 arch=('i686' 'x86_64')
@@ -14,17 +14,13 @@ source=("http://opentoolsandspace.org/Art/WorkFlow/${name}-${pkgver}.tar.gz")
 md5sums=('360ad1182758922e859fce87f570e99b')
 
 build() {
-  cd "${srcdir}/${name}-${pkgver}"
-
-  #mkdir build && cd build
-  cd build
-
-  cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+  mkdir -p "$srcdir/build"
+  cd "$srcdir/build"
+  cmake "$srcdir/${name}-${pkgver}" -DCMAKE_INSTALL_PREFIX="$(kde4-config --prefix)"
   make
 }
 
 package() {
-  cd "${srcdir}/${name}-${pkgver}/build"
-
+  cd "${srcdir}/build"
   make DESTDIR="$pkgdir/" install
 }
