@@ -16,8 +16,7 @@ md5sums=('8a44996979a19223ba8066bf28220050')
 build() {
   mkdir -p "$srcdir/build"
   cd "$srcdir/build"
-  cmake "$srcdir/activitymanager-wheeled-${pkgver}" \
-    -DCMAKE_INSTALL_PREFIX="$(kde4-config --prefix)"
+  cmake "$srcdir/activitymanager-wheeled-${pkgver}" -DCMAKE_INSTALL_PREFIX="$(kde4-config --prefix)"
   make
 }
 

@@ -14,13 +14,13 @@ source=("http://kde-apps.org/CONTENT/content-files/148737-redshift-plasmoid-$pkg
 md5sums=('fc1992253d0e45e5954fc33bc8f2edc0')
 
 build() {
-  mkdir -p "$srcdir/redshift-plasmoid-${pkgver}/build"
-  cd "$srcdir/redshift-plasmoid-${pkgver}/build"
-  cmake -DCMAKE_INSTALL_PREFIX="$(kde4-config --prefix)" ..
+  mkdir -p "$srcdir/build"
+  cd "$srcdir/build"
+  cmake "$srcdir/redshift-plasmoid-${pkgver}" -DCMAKE_INSTALL_PREFIX="$(kde4-config --prefix)"
   make
 }
 
 package() {
-  cd "${srcdir}/redshift-plasmoid-${pkgver}/build"
+  cd "${srcdir}/build"
   make DESTDIR="$pkgdir" install
 }
