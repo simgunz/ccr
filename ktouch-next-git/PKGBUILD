@@ -1,0 +1,37 @@
+# Mantainer: Simone Gaiarin <simgunz@gmail.com>
+
+pkgname=ktouch-next-git
+pkgver=20120916
+pkgrel=1
+pkgdesc="Touch Typing Tutor"
+arch=('i686' 'x86_64')
+url="http://www.kde.org/applications/education/ktouch/"
+license=('LGPL')
+depends=('kdelibs')
+makedepends=('git' 'cmake' 'automoc4')
+provides=('ktouch')
+conflicts=('ktouch')
+install=ktouch-next-git.install
+
+_gitroot="git://anongit.kde.org/ktouch"
+_gitname="next"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  rm -rf $_gitname
+
+  git clone -b $_gitname $_gitroot $_gitname
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  cp -r "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  cmake -DCMAKE_INSTALL_PREFIX=$(kde4-config --prefix) -DCMAKE_BUILD_TYPE=Release
+  make DESTDIR="$pkgdir/" install
+  rm -rf "$srcdir/$_gitname-build"
+}
