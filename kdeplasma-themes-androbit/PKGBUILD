@@ -1,0 +1,18 @@
+# Maintainer: Simone Gaiarin <simgunz@gmail.com>
+
+pkgname=kde-plasma-themes-androbit
+pkgver=4.9.1
+pkgrel=1
+pkgdesc='A modern theme for KDE4 plasma desktop'
+arch=('any')
+url='http://androbit.org/news.php?readmore=3070&title=androbit_kde_plasma_theme'
+license=('GPL')
+depends=('kdebase-workspace')
+source=("http://androbit.org/downloads/Androbit-${pkgver}.tar.gz")
+md5sums=('1e6ddadfd7a4be193147f48da1617d7a')
+
+build() {
+  cd "${srcdir}/Androbit"
+  mkdir -p "${pkgdir}/usr/share/apps/desktoptheme/androbit"
+  cp -r * "${pkgdir}/usr/share/apps/desktoptheme/androbit"
+}
