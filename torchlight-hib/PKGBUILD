@@ -4,7 +4,7 @@ pkgname=torchlight-hib
 pkgver=20120926
 _hibver=2012-09-26
 pkgrel=1
-pkgdesc='A hack and slash action role-playing game (Humble Bundle version)'
+pkgdesc='[Humble Bundle 6] A hack and slash action role-playing game'
 url='http://www.torchlightgame.com/'
 arch=('i686' 'x86_64')
 license=('custom:commercial')
@@ -14,42 +14,59 @@ screenshot="http://www.torchlightgame.com/assets/images/torchlightlogo_small.png
 source=('torchlight-hib.desktop')
 md5sums=('cb51f1a9b58d9d60dda2a3a763c7985e')
 
-_pkgmd5="eff02cb27a818b4d29e399bc8a293d7f"
-_gamepkg="Torchlight-${_hibver}.sh"
+PKGEXT='.pkg.tar'
+_archive="Torchlight-${_hibver}.sh"
+_archive_md5='eff02cb27a818b4d29e399bc8a293d7f'
 
+_bundle=('humblebundle6')
 
-package() {
-  cd $srcdir
-
-  msg "You need a full copy of this game in order to install it"
-  msg "Searching for ${_gamepkg} in dir: $(readlink -f `pwd`/..)"
-  if [[ -f "../${_gamepkg}" ]]; then
-      msg "Found game package, installing..."
-      ln -fs "../${_gamepkg}" .
-  elif [[ -f "${_gamepkg}" ]]; then
-      msg "Found game package in ${srcdir}, installing..."
-  else
-      error "Please type absolute path to ${_gamepkg} (/home/joe): "
-      read pkgpath
-      if [[ -f "${pkgpath}/${_gamepkg}" ]]; then
-          msg "Found game package, installing..."
-          ln -fs "${pkgpath}/${_gamepkg}" .
-      else
-          error "Unable to find game package."
-          return 1
-      fi
+_humble() {
+  if [[ -f "${_gamedir}/${_archive}" ]]; then
+    ln -sf "${_gamedir}/${_archive}"
   fi
 
-  msg "Calculating md5sum..."
-  if [[ $(md5sum ${_gamepkg} | cut -d " " -f 1) != ${_pkgmd5} ]]; then
-    error "One or more files did not pass the validity check!"
+  if [ ! -f "${_archive}" ]; then
+    for bundle in ${_bundle[@]}; do
+      case ${bundle} in
+        "humblebundle"*) _key="_humblebundle${bundle:12}key";;
+        *) continue;;
+      esac
+      if [ -n "${!_key}" ]; then
+        msg2 "Getting your unique ${pkgname} download location."
+        _uri="$(curl -s "http://www.humblebundle.com/downloads?key=${!_key}" | grep "${_archive}" | cut -d "'" -f 10)"
+        wget $_uri -O ${_archive}
+        break
+      fi
+    done
+    if [ -z "${!_key}" -a ! -f "${startdir}/${_archive}" ]; then
+      error "Unable to find \"${_archive}\"."
+      plain "You should run one of these commands before installing this pkg."
+      for bundle in ${_bundle[@]}; do
+        plain "$ export _${bundle}key=<your-${bundle}-key>"
+      done
+      plain "$ export _gamedir=<dir/to/${_archive}>"
+      exit 1
+    fi
+  fi
+  if ! echo "${_archive_md5}  ${_archive}" | md5sum -c --quiet; then
+    echo "Invalid checksum for ${_archive}"
     return 1
   fi
+  unset _key _uri _archive_md5 _bundle
+}
 
-  # Execute installer
-  msg "Starting setup..."
+build() {
+  cd "${srcdir}"
+  _humble
+
+  chmod +x $_archive
+}
+
+package() {
+  cd "${srcdir}"
+
   [[ -d "./temp" ]] && rm -r "./temp"
-  sh "./${_gamepkg}" --unattended --accept-license --no-register --keep --overwrite \
+  sh "./${_archive}" --unattended --accept-license --no-register --keep --overwrite \
                      --target  "${srcdir}/temp" \
                      --bindir  "${srcdir}/bin" \
                      --datadir "${pkgdir}/opt"
