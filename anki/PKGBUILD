@@ -1,0 +1,39 @@
+# Maintainer: Simone Gaiarin <simgunz@gmail.com>
+
+pkgname=anki
+_pkgver=2.0
+pkgver=$_pkgver.0
+pkgrel=2
+pkgdesc="Helps you remember facts (like words/phrases in a foreign language) efficiently. Version 2.0. WARNING: Do NOT install this version if you are also using the mobile version of anki. It can break your decks."
+arch=('any')
+url="http://ankisrs.net"
+license=('AGPL3' 'BSD')
+depends=('mplayer' 'pyqt' 'python2-beautifulsoup4' 'python2-httplib2')
+optdepends=('python2-pyaudio: to record audio files')
+install=anki.install
+source=("http://ankisrs.net/download/mirror/anki-$pkgver.tgz")
+sha256sums=('2166857447d573fd7a99881de5f92898b24b3341f8271fbab9ec951167e5dc0f')
+sha512sums=('56b42f6be6adc3f6ca0ae42eccbcbc28199548103560ba8c3c97aab8b58d4b69ae42d965debc26feab894e67fd6d997b6d03adc4782317a43cabf9d0a3a89ce5')
+
+package() {
+    cd "$srcdir/anki-$_pkgver/"
+
+    # remove unneeded libraries
+    rm -rf libanki/thirdparty/ tools/
+
+    sed -i 's:#!/usr/bin/env python:&2:' anki
+    install -Dm755 anki "$pkgdir/usr/bin/anki"
+    install -Dm644 anki.xpm "$pkgdir/usr/share/pixmaps/anki.xpm"
+    install -Dm644 anki.png "$pkgdir/usr/share/pixmaps/anki.png"
+    desktop-file-install anki.desktop --dir "$pkgdir/usr/share/applications/"
+    install -Dm644 anki.1 "$pkgdir/usr/share/man/man1/anki.1"
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -Dm644 LICENSE.logo "$pkgdir/usr/share/licenses/$pkgname/LICENSE.logo"
+
+    rm anki{,.xpm,.png,.desktop,.1,.xml} LICENSE.logo {libanki,.}/{LICENSE,ChangeLog.old} Makefile
+    find -name '*.bat' -delete
+    find -name 'README*' -delete
+
+    install -d "$pkgdir/usr/share/anki/"
+    cp -a * "$pkgdir/usr/share/anki/"
+}
