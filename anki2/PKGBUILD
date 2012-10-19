@@ -1,6 +1,6 @@
 # Maintainer: Simone Gaiarin <simgunz@gmail.com>
 
-pkgname=anki
+pkgname=anki2
 _pkgver=2.0
 pkgver=$_pkgver.0
 pkgrel=2
@@ -9,6 +9,7 @@ arch=('any')
 url="http://ankisrs.net"
 license=('AGPL3' 'BSD')
 depends=('mplayer' 'pyqt' 'python2-beautifulsoup4' 'python2-httplib2')
+conflicts=('anki')
 optdepends=('python2-pyaudio: to record audio files')
 install=anki.install
 source=("http://ankisrs.net/download/mirror/anki-$pkgver.tgz")
