@@ -1,7 +1,7 @@
 # Maintainer: Simone Gaiarin <simgunz@gmail.com>
 
 pkgname=mythtv
-pkgver=0.25.2
+pkgver=0.26.0
 pkgrel=1
 epoch=1
 pkgdesc="A Homebrew PVR project"
@@ -26,17 +26,20 @@ install='mythtv.install'
 source=("ftp://ftp.osuosl.org/pub/$pkgname/$pkgname-$pkgver.tar.bz2"
         'mythbackend.rc'
         'mythbackend.conf'
-        'mythbackend.service')
-md5sums=('2bf8c0aa75e88d39747e59c27aa6072e'
+        'mythbackend.service'
+        'mythtv.desktop'
+        'mythtv-setup.desktop')
+md5sums=('f57066bf75e6f14824c494d41639f4f9'
          'c8f935d42fb8617e9279bd539811ca5f'
          'ab962d83614cbd0ac11ce3fcc929829d'
-         '813008d14a44e9c6212f364723aeaa74')
+         'e4d572dcc307d6d8ae26bee5aebf9f3a'
+         '659ef96eeccb8559f449df4bd91cfc41'
+         '347f3ddf54f884700ce15e088a01c2cd')
 
+         
 build() {
   cd "$srcdir/$pkgname-$pkgver"
-  find 'bindings/python' 'contrib' -type f | xargs sed -i 's@^#!.*python$@#!/usr/bin/python2@'
-
-  sed -re 's@Key, &@Key, @' -i 'bindings/php/MythBase.php'
+  find 'bindings/python' 'contrib' -type f | xargs sed -i 's@^#!.*python$@#!/usr/bin/python2@'  
 
   ARCH="${CARCH/_/-}"
   ./configure --prefix=/usr \
@@ -56,7 +59,9 @@ build() {
 package() {
   cd "$srcdir/$pkgname-$pkgver"
   make INSTALL_ROOT="$pkgdir" install
-
+  
+  install -D -m644 "$srcdir/mythtv.desktop" "$pkgdir/usr/share/applications/mythtv.desktop"
+  install -D -m644 "$srcdir/mythtv-setup.desktop" "$pkgdir/usr/share/applications/mythtv-setup.desktop"
   install -D -m755 "$srcdir/mythbackend.rc" "$pkgdir/etc/rc.d/mythbackend"
   install -D -m644 "$srcdir/mythbackend.conf" "$pkgdir/etc/conf.d/mythbackend"
   install -D -m644 "$srcdir/mythbackend.service" "$pkgdir/usr/lib/systemd/system/mythbackend.service"

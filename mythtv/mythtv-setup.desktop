@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=MythTV Backend Setup
+Comment=Used to configure the mythtv backend
+GenericName=mythtv-setup
+Exec=mythtv-setup
+Type=Application
+Encoding=UTF-8
+Icon=mythtv
+Categories=System;Settings
