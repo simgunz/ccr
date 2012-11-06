@@ -1,54 +1,48 @@
 # Maintainer: Simone Gaiarin <simgunz@gmail.com>
- 
-company=logmein
-product=hamachi
-pkgname=${company}-${product}
-pkgver=2.1.0.17
-pkgrel=4
+
+pkgname=logmein-hamachi
+pkgver=2.1.0.76
+pkgrel=1
 pkgdesc="A zero-configuration VPN service"
 arch=("i686" "x86_64")
-url="https://secure.${company}.com/UK/products/${product}/"
+url="https://secure.logmein.com/UK/products/hamachi/"
 license=("custom")
-conflicts=("${product}")
-replaces=("${product}")
+conflicts=('hamachi')
+replaces=('hamachi')
 install="${pkgname}.install"
 options=("!strip")
- 
-[ "${CARCH}" == "i686" ] && {
-  filearch='x86'
-  sha1sums=('306e537c2dff541ace8bfbdd69514c12343f53d1'
-	    '9b9563be0fb8de513497d1d3ca58c11cc4f52e70')
-}
- 
-[ "${CARCH}" == "x86_64" ] && {
-  filearch='x64'
-  sha1sums=('fe5e311b702205a317bd598d8029d03b36d2ffec'
-	    '9b9563be0fb8de513497d1d3ca58c11cc4f52e70')
-}
- 
-source=("https://secure.${company}.com/labs/${pkgname}-${pkgver}-${filearch}.tgz"
-	"hamachi-init")
- 
+
+[ "${CARCH}" == "i686" ] && filearch='x86' && sha1sums=('9bb37c079d2ecaebe983affd6ed677d868804fa5'
+                                                        '5766983ed25729fd020390f265645b2017e921b7'
+                                                        '21ecb1e388882087205937af6455d32ee70d79e8')
+
+[ "${CARCH}" == "x86_64" ] && filearch='x64' && sha1sums=('a0584cd3ad59582b14e53388b5883473e9371cea'
+                                                          '5766983ed25729fd020390f265645b2017e921b7'
+                                                          '21ecb1e388882087205937af6455d32ee70d79e8')
+
+source=("https://secure.logmein.com/labs/${pkgname}-${pkgver}-${filearch}.tgz" 'systemd' 'logmein-hamachi.conf')
+
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}-${filearch}"
- 
+
   # Directories
   install -d "${pkgdir}/opt/${pkgname}/bin"
-  install -d "${pkgdir}/usr/bin" "${pkgdir}/etc/rc.d"
+  install -d "${pkgdir}/usr/bin"
+  install -d "${pkgdir}/usr/lib/systemd/system"
   install -d "${pkgdir}/usr/share/licenses/${pkgname}"
- 
-  install -m 755 "${product}d" "${pkgdir}/opt/${pkgname}/bin"
+  install -d "${pkgdir}/etc/modules-load.d/"
+
+  install -m 755 "hamachid" "${pkgdir}/opt/${pkgname}/bin"
   install -m 755 dnsup "${pkgdir}/opt/${pkgname}/bin"
   install -m 755 dnsdown "${pkgdir}/opt/${pkgname}/bin"
   install -m 755 uninstall.sh "${pkgdir}/opt/${pkgname}"
   install -m 444 README "${pkgdir}/opt/${pkgname}"
   install -m 444 LICENSE "${pkgdir}/opt/${pkgname}"
   install -m 444 CHANGES "${pkgdir}/opt/${pkgname}"
-  ln -sf "/opt/${pkgname}/bin/${product}d" "${pkgdir}/usr/bin/${product}"
-  install -m 755 "${srcdir}/${product}-init" "${pkgdir}/etc/rc.d/${pkgname}"
- 
+  ln -sf "/opt/${pkgname}/bin/hamachid" "${pkgdir}/usr/bin/hamachi"
+  install -m 644 "${srcdir}/systemd" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+  install -m 644 "${srcdir}/logmein-hamachi.conf" "${pkgdir}/etc/modules-load.d/logmein-hamachi.conf"
+
   # License
   ln -sf "/opt/${pkgname}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
- 
-# vim:set ts=2 sw=2 et:
