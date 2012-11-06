@@ -1,0 +1,26 @@
+# Maintainer: Simone Gaiarin <simgunz@gmail.com>
+
+pkgname=colord-kde
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="Interfaces and session daemon to colord for KDE"
+arch=('i686' 'x86_64')
+url='https://projects.kde.org/projects/playground/graphics/colord-kde'
+license=('GPL')
+depends=('kdelibs' 'colord')
+makedepends=('cmake' 'automoc4')
+source=("http://dl.dropbox.com/u/37314029/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('558f30490eacbc0531f2a396ec24dbc6')
+
+build() {
+  cd "$srcdir/$pkgname-0.2"
+  cmake . -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=$(kde4-config --prefix)
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-0.2"
+  make DESTDIR="$pkgdir" install
+}
+
