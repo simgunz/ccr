@@ -1,9 +1,8 @@
 # Maintainer: Simone Gaiarin <simgunz@gmail.com>
 
 pkgname=anki2
-_pkgver=2.0
-pkgver=$_pkgver.0
-pkgrel=2
+pkgver=2.0.3
+pkgrel=1
 pkgdesc="Helps you remember facts (like words/phrases in a foreign language) efficiently. Version 2.0. WARNING: Do NOT install this version if you are also using the mobile version of anki. It can break your decks."
 arch=('any')
 url="http://ankisrs.net"
@@ -13,11 +12,11 @@ conflicts=('anki')
 optdepends=('python2-pyaudio: to record audio files')
 install=anki.install
 source=("http://ankisrs.net/download/mirror/anki-$pkgver.tgz")
-sha256sums=('2166857447d573fd7a99881de5f92898b24b3341f8271fbab9ec951167e5dc0f')
-sha512sums=('56b42f6be6adc3f6ca0ae42eccbcbc28199548103560ba8c3c97aab8b58d4b69ae42d965debc26feab894e67fd6d997b6d03adc4782317a43cabf9d0a3a89ce5')
+sha256sums=('f40ee4ef29c91101cf9978ce7bd4c513f13ca7c77497a3fb50b8128adf3a5178')
+sha512sums=('6ae48444701246a70f4ceee4208a8d81d9a6b559305546b4b19fd9fc47f4a5658548466d4c781c5de77fe31520238a26c9509f9fb797b87342e03aab246d6c68')
 
 package() {
-    cd "$srcdir/anki-$_pkgver/"
+    cd "$srcdir/anki-$pkgver/"
 
     # remove unneeded libraries
     rm -rf libanki/thirdparty/ tools/
