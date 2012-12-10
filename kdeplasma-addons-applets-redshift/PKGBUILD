@@ -1,17 +1,18 @@
 # Maintainer: Simone Gaiarin <simgunz@gmail.com>
 
 pkgname=kdeplasma-addons-applets-redshift
-pkgver=0.4.4
+pkgver=0.5.1
 pkgrel=1
 pkgdesc='Redshift plasmoid provides a configuration interface and allows to start/stop Redshift daemon either manually or automatically based on the current activity'
 arch=('any')
-url='http://kde-apps.org/content/show.php?content=148737'
+url='http://simgunz.org/projects/redshift-plasmoid/'
 license=('GPL')
 depends=('kde-workspace' 'redshift')
 conflicts=('kdeplasma-addons-applets-redshift<0.4')
 install='redshift.install'
+screenshot='http://simgunz.org/wp-content/uploads/2012/10/redshift-scr-1.png'
 source=("http://kde-apps.org/CONTENT/content-files/148737-redshift-plasmoid-$pkgver.tar.bz2")
-md5sums=('fc1992253d0e45e5954fc33bc8f2edc0')
+md5sums=('9d3df877cea93291051cf6b624141bf2')
 
 build() {
   mkdir -p "$srcdir/build"
