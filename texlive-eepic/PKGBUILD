@@ -1,0 +1,23 @@
+# Maintainer: Simone Gaiarin <simgunz@gmail.com>
+
+pkgname=texlive-eepic
+pkgver=1.00
+pkgrel=3
+license=('GPL')
+depends=('texlive-core')
+pkgdesc="Ex­ten­sions to epic and the LATEX pic­ture draw­ing en­vi­ron­ment, in­clude the draw­ing of lines at any slope, the draw­ing of cir­cles in any radii, and the draw­ing of dot­ted and dashed lines much faster with much less TEX mem­ory"
+url="http://www.ctan.org/tex-archive/macros/latex/contrib/eepic/"
+arch=('any')
+install=texlive-eepic.install
+source=('http://mirrors.ctan.org/macros/latex/contrib/eepic/epic.sty'
+        'http://mirrors.ctan.org/macros/latex/contrib/eepic/eepic.sty')
+md5sums=('0e813d2f6e266780f0cedef5eb5e2525'
+         'c85d6c04287ee4592a15f6d02221d58f')
+
+package()
+{
+  mkdir -p $pkgdir/usr/share/texmf/tex/latex/epic
+  cp $srcdir/epic.sty $pkgdir/usr/share/texmf/tex/latex/epic
+  mkdir -p $pkgdir/usr/share/texmf/tex/latex/eepic
+  cp $srcdir/eepic.sty $pkgdir/usr/share/texmf/tex/latex/eepic
+}
