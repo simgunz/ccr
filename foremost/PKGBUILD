@@ -2,7 +2,7 @@
 
 pkgname=foremost
 pkgver=1.5.7
-pkgrel=1
+pkgrel=2
 pkgdesc="A console program to recover files based on their headers, footers, and internal data structures"
 arch=('i686' 'x86_64')
 url="http://foremost.sourceforge.net/"
@@ -19,7 +19,6 @@ sha256sums=('502054ef212e3d90b292e99c7f7ac91f89f024720cd5a7e7680c3d1901ef5f34'
 build() {
   cd ${srcdir}/$pkgname-$pkgver
 
-  install -d ${pkgdir}/{etc,{usr/bin,usr/share/man/man8}}
   patch -Np1 -i ${srcdir}/$pkgname-1.4-config-location.patch
 
   make
@@ -28,6 +27,7 @@ build() {
 package () {
   cd ${srcdir}/$pkgname-$pkgver
 
+  install -d ${pkgdir}/{etc,{usr/bin,usr/share/man/man8}}
   patch -Np0 -i ${srcdir}/$pkgname-makefile.diff
   make DESTDIR=${pkgdir} install
 
