@@ -1,0 +1,50 @@
+#
+# CCR Packages for Chakra, part of chakra-project.org
+#
+# maintainer: Giuseppe Calà <jiveaxe@gmail.com>
+
+pkgname=kdevelop-krazy2-git
+_gitname="kdev-krazy2"
+pkgver=20121112
+pkgrel=1
+pkgdesc="KDevelop plugin to perform Krazy2 analysis."
+arch=('i686' 'x86_64')
+url="https://projects.kde.org/${_gitname}"
+license=('GPL')
+depends=('kdevplatform')
+conflicts=(${pkgname/-git/})
+provides=(${pkgname/-git/})
+makedepends=('cmake' 'automoc4' 'git')
+source=()
+md5sums=()
+
+_gitroot="git://anongit.kde.org/${_gitname}"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+  if [ -d $_gitname ] ; then
+    cd $_gitname
+    git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+  fi
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  if [ -e "$srcdir"/$_gitname-build ]; then
+        rm -rf "$srcdir"/$_gitname-build
+  fi
+
+  mkdir -p "$srcdir"/$_gitname-build
+  cd "$srcdir"/$_gitname-build
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr ../$_gitname
+  make
+}
+
+package() {
+  cd "$srcdir"/$_gitname-build
+  make DESTDIR="$pkgdir" install
+}
