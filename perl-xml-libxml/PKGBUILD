@@ -1,19 +1,18 @@
 # Maintainer: Simone Gaiarin <simgunz@gmail.com>
 
 pkgname=perl-xml-libxml
-pkgver=1.98
+pkgver=2.0107
 pkgrel=1
 pkgdesc="Interface to the libxml library"
 arch=('i686' 'x86_64')
 url="http://search.cpan.org/dist/XML-LibXML"
 license=('GPL')
-depends=('libxml2' 'perl-xml-sax>=0.11' 'perl-xml-namespacesupport>=1.07')
+depends=('libxml2' 'perl-xml-sax' 'perl-xml-namespacesupport')
 provides=('perl-libxml' 'perl-xml-libxml-common')
 replaces=('perl-libxml' 'perl-xml-libxml-common')
-conflicts=('perl-libxml' 'perl-xml-libxml-common')
 install=perl-xml-libxml.install
 source=(http://www.cpan.org/authors/id/S/SH/SHLOMIF/XML-LibXML-$pkgver.tar.gz)
-md5sums=('78c2e293d02e92ca99b07e9a768380ca')
+md5sums=('4caedd8fb64167e1caf0443f18ec47a2')
 
 build() {
   cd $srcdir/XML-LibXML-$pkgver
