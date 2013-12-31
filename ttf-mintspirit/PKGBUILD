@@ -1,21 +1,22 @@
 # Maintainer: Simone Gaiarin <simgunz@gmail.com>
 
 pkgname=ttf-mintspirit
-pkgver=1.002
+pkgver=1.004
 pkgrel=1
-depends=(fontconfig xorg-font-utils)
+depends=('fontconfig' 'xorg-font-utils')
 pkgdesc="Linux Mint Font"
-arch=(any)
-license=(custom)
-url=http://www.linuxmint.com/
-install=ttf-mintspirit.install
+arch=('any')
+license=('custom')
+url='http://www.linuxmint.com/'
+install='ttf-mintspirit.install'
+source=("mint_spirit.zip::http://arkandis.tuxfamily.org/fonts/MintSpirit-20120526.zip")
+md5sums=('ab1ae98ed739a13b397d8634ca8abe5f')
 
-build()
+package()
 {
-  wget -O mint_spirit.zip "http://arkandis.tuxfamily.org/fonts/MintSpirit-PV.zip"
-  bsdtar -xf mint_spirit.zip
-  chmod 644 */*/*.otf
-  mkdir -p "${pkgdir}/usr/share/fonts/TTF"
-  mv */*/*.otf "${pkgdir}/usr/share/fonts/TTF/"
+  mkdir -p "${pkgdir}/usr/share/fonts/TTF/"
+  mkdir -p "${pkgdir}/usr/share/licenses/ttf-mintspirit/"
+  install -D -m644 "$srcdir"/MintSpirit-20120526/OTF/*.otf "${pkgdir}/usr/share/fonts/TTF/"
+  install -D -m644 "$srcdir"/MintSpirit-20120526/OTF/OFL.txt "${pkgdir}/usr/share/licenses/ttf-mintspirit/LICENSE"
 }
 
