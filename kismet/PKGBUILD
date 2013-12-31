@@ -1,9 +1,9 @@
 # Maintainer: Simone Gaiarin <simgunz@gmail.com>
 
 pkgname=kismet
-pkgver=2011_03_R2
+pkgver=2013_03_R1b
 _realver="${pkgver//_/-}"
-pkgrel=2
+pkgrel=1
 pkgdesc="802.11 layer2 wireless network detector, sniffer, and intrusion detection system"
 arch=('i686' 'x86_64')
 url="http://www.kismetwireless.net/"
@@ -19,11 +19,11 @@ optdepends=('gpsd: log coordinates of detected networks'
             'mac80211-driver: full rfmon support'
             'ruby: ruby interface')
 backup=('etc/kismet.conf' 'etc/kismet_drone.conf')
-options=()
 install=kismet.install
 changelog=kismet.changelog
-source=("http://www.kismetwireless.net/code/${pkgname}-${_realver}.tar.gz")
-md5sums=('8bf077e8111e6dc8c12cadefdf40aadd')
+source=("http://www.kismetwireless.net/code/${pkgname}-${_realver}.tar.gz"{,.asc})
+md5sums=('6cdcd78baf2e15edbe8a9de3c5493f02'
+         'SKIP')
 
 build() {
     cd "${srcdir}/${pkgname}-${_realver}"
